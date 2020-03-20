@@ -213,7 +213,8 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
     window->denom       = GLFW_DONT_CARE;
 
     // Open the actual window and create its context
-    if (!_glfwPlatformCreateWindow(window, &wndconfig, &ctxconfig, &fbconfig))
+		int success= _glfwPlatformCreateWindow(window, &wndconfig, &ctxconfig, &fbconfig);
+    if (!success)
     {
         glfwDestroyWindow((GLFWwindow*) window);
         return NULL;
@@ -238,8 +239,9 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
         if (wndconfig.visible)
         {
             _glfwPlatformShowWindow(window);
-            if (wndconfig.focused)
-                _glfwPlatformFocusWindow(window);
+						// it tiried focus
+            /*if (wndconfig.focused)*/
+                /*_glfwPlatformFocusWindow(window);*/
         }
     }
 

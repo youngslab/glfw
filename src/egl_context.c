@@ -302,6 +302,9 @@ static void destroyContextEGL(_GLFWwindow* window)
 //
 GLFWbool _glfwInitEGL(void)
 {
+
+  fprintf(stdout, "_glfwInitEGL(void)\n");
+
     int i;
     const char* sonames[] =
     {
@@ -460,6 +463,7 @@ GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
                                const _GLFWctxconfig* ctxconfig,
                                const _GLFWfbconfig* fbconfig)
 {
+    fprintf(stdout, "_glfwCreateContextEGL\n");
     EGLint attribs[40];
     EGLConfig config;
     EGLContext share = NULL;
@@ -477,7 +481,7 @@ GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
     if (!chooseEGLConfig(ctxconfig, fbconfig, &config))
     {
         _glfwInputError(GLFW_FORMAT_UNAVAILABLE,
-                        "EGL: Failed to find a suitable EGLConfig");
+                        "EGL: Failed to find a suitable EGLConfig - ");
         return GLFW_FALSE;
     }
 

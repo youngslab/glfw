@@ -256,7 +256,7 @@ void reshape( GLFWwindow* window, int width, int height )
   glViewport( 0, 0, (GLint) width, (GLint) height );
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity();
-  glFrustum( -xmax, xmax, -xmax*h, xmax*h, znear, zfar );
+  // glFrustum( -xmax, xmax, -xmax*h, xmax*h, znear, zfar );
   glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   glTranslatef( 0.0, 0.0, -20.0 );
@@ -299,6 +299,11 @@ static void init(void)
   glEnable(GL_NORMALIZE);
 }
 
+void error_callback(int err, const char *desc) {
+
+  fprintf(stderr, "%d: %s\n", err, desc);
+}
+
 
 /* program entry */
 int main(int argc, char *argv[])
@@ -306,12 +311,20 @@ int main(int argc, char *argv[])
     GLFWwindow* window;
     int width, height;
 
+
+		glfwSetErrorCallback(error_callback);
+
+
     if( !glfwInit() )
     {
         fprintf( stderr, "Failed to initialize GLFW\n" );
         exit( EXIT_FAILURE );
     }
 
+		glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_DEPTH_BITS, 16);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
 
@@ -324,7 +337,7 @@ int main(int argc, char *argv[])
     }
 
     // Set callback functions
-    glfwSetFramebufferSizeCallback(window, reshape);
+    // glfwSetFramebufferSizeCallback(window, reshape);
     glfwSetKeyCallback(window, key);
 
     glfwMakeContextCurrent(window);
@@ -332,7 +345,7 @@ int main(int argc, char *argv[])
     glfwSwapInterval( 1 );
 
     glfwGetFramebufferSize(window, &width, &height);
-    reshape(window, width, height);
+    //reshape(window, width, height);
 
     // Parse command-line options
     init();

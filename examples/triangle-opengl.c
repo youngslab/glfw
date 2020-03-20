@@ -86,9 +86,13 @@ int main(void)
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    /*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);*/
+    /*glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);*/
+    /*glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 
     GLFWwindow* window = glfwCreateWindow(640, 480, "OpenGL Triangle", NULL, NULL);
     if (!window)
@@ -139,11 +143,13 @@ int main(void)
 
     while (!glfwWindowShouldClose(window))
     {
+
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
         const float ratio = width / (float) height;
 
         glViewport(0, 0, width, height);
+ 			  fprintf(stdout, "viewport %d, %d\n", width, height);
         glClear(GL_COLOR_BUFFER_BIT);
 
         mat4x4 m, p, mvp;

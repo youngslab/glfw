@@ -265,21 +265,21 @@ static void destroyDecorations(_GLFWwindow* window)
     destroyDecoration(&window->wl.decorations.bottom);
 }
 
-static void xdgDecorationHandleConfigure(void* data,
-                                         struct zxdg_toplevel_decoration_v1* decoration,
-                                         uint32_t mode)
-{
-    _GLFWwindow* window = data;
+/*static void xdgDecorationHandleConfigure(void* data,*/
+                                         /*struct zxdg_toplevel_decoration_v1* decoration,*/
+                                         /*uint32_t mode)*/
+/*{*/
+    /*_GLFWwindow* window = data;*/
 
-    window->wl.decorations.serverSide = (mode == ZXDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);
+    /*window->wl.decorations.serverSide = (mode == ZXDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);*/
 
-    if (!window->wl.decorations.serverSide)
-        createDecorations(window);
-}
+    /*if (!window->wl.decorations.serverSide)*/
+        /*createDecorations(window);*/
+/*}*/
 
-static const struct zxdg_toplevel_decoration_v1_listener xdgDecorationListener = {
-    xdgDecorationHandleConfigure,
-};
+/*static const struct zxdg_toplevel_decoration_v1_listener xdgDecorationListener = {*/
+    /*xdgDecorationHandleConfigure,*/
+/*};*/
 
 // Makes the surface considered as XRGB instead of ARGB.
 static void setOpaqueRegion(_GLFWwindow* window)
@@ -430,6 +430,7 @@ static void setIdleInhibitor(_GLFWwindow* window, GLFWbool enable)
 static GLFWbool createSurface(_GLFWwindow* window,
                               const _GLFWwndconfig* wndconfig)
 {
+	  fprintf(stdout, "create surface\n");
     window->wl.surface = wl_compositor_create_surface(_glfw.wl.compositor);
     if (!window->wl.surface)
         return GLFW_FALSE;
@@ -459,186 +460,232 @@ static GLFWbool createSurface(_GLFWwindow* window,
 static void setFullscreen(_GLFWwindow* window, _GLFWmonitor* monitor,
                           int refreshRate)
 {
-    if (window->wl.xdg.toplevel)
-    {
-        xdg_toplevel_set_fullscreen(
-            window->wl.xdg.toplevel,
-            monitor->wl.output);
-    }
-    setIdleInhibitor(window, GLFW_TRUE);
-    if (!window->wl.decorations.serverSide)
-        destroyDecorations(window);
+    /*if (window->wl.xdg.toplevel)*/
+    /*{*/
+        /*xdg_toplevel_set_fullscreen(*/
+            /*window->wl.xdg.toplevel,*/
+            /*monitor->wl.output);*/
+    /*}*/
+    /*setIdleInhibitor(window, GLFW_TRUE);*/
+    /*if (!window->wl.decorations.serverSide)*/
+        /*destroyDecorations(window);*/
 }
 
-static void xdgToplevelHandleConfigure(void* data,
-                                       struct xdg_toplevel* toplevel,
-                                       int32_t width,
-                                       int32_t height,
-                                       struct wl_array* states)
-{
-    _GLFWwindow* window = data;
-    float aspectRatio;
-    float targetRatio;
-    uint32_t* state;
-    GLFWbool maximized = GLFW_FALSE;
-    GLFWbool fullscreen = GLFW_FALSE;
-    GLFWbool activated = GLFW_FALSE;
+/*static void xdgToplevelHandleConfigure(void* data,*/
+                                       /*struct xdg_toplevel* toplevel,*/
+                                       /*int32_t width,*/
+                                       /*int32_t height,*/
+                                       /*struct wl_array* states)*/
+/*{*/
+    /*_GLFWwindow* window = data;*/
+    /*float aspectRatio;*/
+    /*float targetRatio;*/
+    /*uint32_t* state;*/
+    /*GLFWbool maximized = GLFW_FALSE;*/
+    /*GLFWbool fullscreen = GLFW_FALSE;*/
+    /*GLFWbool activated = GLFW_FALSE;*/
 
-    wl_array_for_each(state, states)
-    {
-        switch (*state)
-        {
-            case XDG_TOPLEVEL_STATE_MAXIMIZED:
-                maximized = GLFW_TRUE;
-                break;
-            case XDG_TOPLEVEL_STATE_FULLSCREEN:
-                fullscreen = GLFW_TRUE;
-                break;
-            case XDG_TOPLEVEL_STATE_RESIZING:
-                break;
-            case XDG_TOPLEVEL_STATE_ACTIVATED:
-                activated = GLFW_TRUE;
-                break;
-        }
-    }
+    /*wl_array_for_each(state, states)*/
+    /*{*/
+        /*switch (*state)*/
+        /*{*/
+            /*case XDG_TOPLEVEL_STATE_MAXIMIZED:*/
+                /*maximized = GLFW_TRUE;*/
+                /*break;*/
+            /*case XDG_TOPLEVEL_STATE_FULLSCREEN:*/
+                /*fullscreen = GLFW_TRUE;*/
+                /*break;*/
+            /*case XDG_TOPLEVEL_STATE_RESIZING:*/
+                /*break;*/
+            /*case XDG_TOPLEVEL_STATE_ACTIVATED:*/
+                /*activated = GLFW_TRUE;*/
+                /*break;*/
+        /*}*/
+    /*}*/
 
-    if (width != 0 && height != 0)
-    {
-        if (!maximized && !fullscreen)
-        {
-            if (window->numer != GLFW_DONT_CARE && window->denom != GLFW_DONT_CARE)
-            {
-                aspectRatio = (float)width / (float)height;
-                targetRatio = (float)window->numer / (float)window->denom;
-                if (aspectRatio < targetRatio)
-                    height = width / targetRatio;
-                else if (aspectRatio > targetRatio)
-                    width = height * targetRatio;
-            }
-        }
+    /*if (width != 0 && height != 0)*/
+    /*{*/
+        /*if (!maximized && !fullscreen)*/
+        /*{*/
+            /*if (window->numer != GLFW_DONT_CARE && window->denom != GLFW_DONT_CARE)*/
+            /*{*/
+                /*aspectRatio = (float)width / (float)height;*/
+                /*targetRatio = (float)window->numer / (float)window->denom;*/
+                /*if (aspectRatio < targetRatio)*/
+                    /*height = width / targetRatio;*/
+                /*else if (aspectRatio > targetRatio)*/
+                    /*width = height * targetRatio;*/
+            /*}*/
+        /*}*/
 
-        _glfwInputWindowSize(window, width, height);
-        _glfwPlatformSetWindowSize(window, width, height);
-        _glfwInputWindowDamage(window);
-    }
+        /*_glfwInputWindowSize(window, width, height);*/
+        /*_glfwPlatformSetWindowSize(window, width, height);*/
+        /*_glfwInputWindowDamage(window);*/
+    /*}*/
 
-    if (window->wl.wasFullscreen && window->autoIconify)
-    {
-        if (!activated || !fullscreen)
-        {
-            _glfwPlatformIconifyWindow(window);
-            window->wl.wasFullscreen = GLFW_FALSE;
-        }
-    }
-    if (fullscreen && activated)
-        window->wl.wasFullscreen = GLFW_TRUE;
-    _glfwInputWindowFocus(window, activated);
+    /*if (window->wl.wasFullscreen && window->autoIconify)*/
+    /*{*/
+        /*if (!activated || !fullscreen)*/
+        /*{*/
+            /*_glfwPlatformIconifyWindow(window);*/
+            /*window->wl.wasFullscreen = GLFW_FALSE;*/
+        /*}*/
+    /*}*/
+    /*if (fullscreen && activated)*/
+        /*window->wl.wasFullscreen = GLFW_TRUE;*/
+    /*_glfwInputWindowFocus(window, activated);*/
+/*}*/
+
+/*static void xdgToplevelHandleClose(void* data,*/
+                                   /*struct xdg_toplevel* toplevel)*/
+/*{*/
+    /*_GLFWwindow* window = data;*/
+    /*_glfwInputWindowCloseRequest(window);*/
+/*}*/
+
+/*static const struct xdg_toplevel_listener xdgToplevelListener = {*/
+    /*xdgToplevelHandleConfigure,*/
+    /*xdgToplevelHandleClose*/
+/*};*/
+
+/*static void xdgSurfaceHandleConfigure(void* data,*/
+                                      /*struct xdg_surface* surface,*/
+                                      /*uint32_t serial)*/
+/*{*/
+    /*xdg_surface_ack_configure(surface, serial);*/
+/*}*/
+
+/*static const struct xdg_surface_listener xdgSurfaceListener = {*/
+    /*xdgSurfaceHandleConfigure*/
+/*};*/
+
+/*static void setXdgDecorations(_GLFWwindow* window)*/
+/*{*/
+    /*if (_glfw.wl.decorationManager)*/
+    /*{*/
+        /*window->wl.xdg.decoration =*/
+            /*zxdg_decoration_manager_v1_get_toplevel_decoration(*/
+                /*_glfw.wl.decorationManager, window->wl.xdg.toplevel);*/
+        /*zxdg_toplevel_decoration_v1_add_listener(window->wl.xdg.decoration,*/
+                                                 /*&xdgDecorationListener,*/
+                                                 /*window);*/
+        /*zxdg_toplevel_decoration_v1_set_mode(*/
+            /*window->wl.xdg.decoration,*/
+            /*ZXDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);*/
+    /*}*/
+    /*else*/
+    /*{*/
+        /*window->wl.decorations.serverSide = GLFW_FALSE;*/
+        /*createDecorations(window);*/
+    /*}*/
+/*}*/
+
+static void shell_surface_ping(void * data,
+                               struct wl_shell_surface *shell_surface,
+                               uint32_t serial) {
+  wl_shell_surface_pong(shell_surface, serial);
 }
 
-static void xdgToplevelHandleClose(void* data,
-                                   struct xdg_toplevel* toplevel)
-{
-    _GLFWwindow* window = data;
-    _glfwInputWindowCloseRequest(window);
+static void shell_surface_configure(void *data,
+                                    struct wl_shell_surface * shell_surface,
+                                    uint32_t edges, int32_t width,
+                                    int32_t height) {
+	  fprintf(stdout, "shell_surface_configure\n");
+    _GLFWwindow *window = (_GLFWwindow*)data;
+    _glfwPlatformSetWindowSize(window, width, height);
 }
 
-static const struct xdg_toplevel_listener xdgToplevelListener = {
-    xdgToplevelHandleConfigure,
-    xdgToplevelHandleClose
-};
+static void shell_surface_popup_done(void *data,
+                                     struct wl_shell_surface *shell_surface) {}
 
-static void xdgSurfaceHandleConfigure(void* data,
-                                      struct xdg_surface* surface,
-                                      uint32_t serial)
-{
-    xdg_surface_ack_configure(surface, serial);
+ struct wl_shell_surface_listener shell_surface_listener = {
+      &shell_surface_ping, &shell_surface_configure, &shell_surface_popup_done};
+
+
+static GLFWbool createShellSurface(_GLFWwindow* window) {
+	// 1st: wl_shell, 2nd: wl_surface
+    window->wl.ivi_shell_surface = wl_shell_get_shell_surface(
+					_glfw.wl.ivi_shell, window->wl.surface);
+	
+	  fprintf(stdout, "createShellSurface().\n");
+		if(!window->wl.ivi_shell_surface) {
+	     fprintf(stdout, "failed to create shell surface.\n");
+    return GLFW_FALSE;
+		}
+  
+  wl_shell_surface_add_listener(window->wl.ivi_shell_surface,
+                                &shell_surface_listener, window);
+
+	wl_surface_commit(window->wl.surface);
+	wl_display_roundtrip(_glfw.wl.display);
+  wl_shell_surface_set_toplevel(window->wl.ivi_shell_surface);
+  return GLFW_TRUE;
 }
 
-static const struct xdg_surface_listener xdgSurfaceListener = {
-    xdgSurfaceHandleConfigure
-};
+/*static GLFWbool createXdgSurface(_GLFWwindow* window)*/
+//TODO: 1. create xdg_surface ..
+/*{*/
+    /*window->wl.xdg.surface = xdg_wm_base_get_xdg_surface(_glfw.wl.wmbase,*/
+                                                         /*window->wl.surface);*/
+    /*if (!window->wl.xdg.surface)*/
+    /*{*/
+        /*_glfwInputError(GLFW_PLATFORM_ERROR,*/
+                        /*"Wayland: xdg-surface creation failed");*/
+        /*return GLFW_FALSE;*/
+    /*}*/
 
-static void setXdgDecorations(_GLFWwindow* window)
-{
-    if (_glfw.wl.decorationManager)
-    {
-        window->wl.xdg.decoration =
-            zxdg_decoration_manager_v1_get_toplevel_decoration(
-                _glfw.wl.decorationManager, window->wl.xdg.toplevel);
-        zxdg_toplevel_decoration_v1_add_listener(window->wl.xdg.decoration,
-                                                 &xdgDecorationListener,
-                                                 window);
-        zxdg_toplevel_decoration_v1_set_mode(
-            window->wl.xdg.decoration,
-            ZXDG_TOPLEVEL_DECORATION_V1_MODE_SERVER_SIDE);
-    }
-    else
-    {
-        window->wl.decorations.serverSide = GLFW_FALSE;
-        createDecorations(window);
-    }
-}
+//TODO: ADD LISTNENER..
+    /*xdg_surface_add_listener(window->wl.xdg.surface,*/
+                             /*&xdgSurfaceListener,*/
+                             /*window);*/
 
-static GLFWbool createXdgSurface(_GLFWwindow* window)
-{
-    window->wl.xdg.surface = xdg_wm_base_get_xdg_surface(_glfw.wl.wmBase,
-                                                         window->wl.surface);
-    if (!window->wl.xdg.surface)
-    {
-        _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "Wayland: xdg-surface creation failed");
-        return GLFW_FALSE;
-    }
 
-    xdg_surface_add_listener(window->wl.xdg.surface,
-                             &xdgSurfaceListener,
-                             window);
+    /*window->wl.xdg.toplevel = xdg_surface_get_toplevel(window->wl.xdg.surface);*/
+    /*if (!window->wl.xdg.toplevel)*/
+    /*{*/
+        /*_glfwInputError(GLFW_PLATFORM_ERROR,*/
+                        /*"Wayland: xdg-toplevel creation failed");*/
+        /*return GLFW_FALSE;*/
+    /*}*/
 
-    window->wl.xdg.toplevel = xdg_surface_get_toplevel(window->wl.xdg.surface);
-    if (!window->wl.xdg.toplevel)
-    {
-        _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "Wayland: xdg-toplevel creation failed");
-        return GLFW_FALSE;
-    }
+    /*xdg_toplevel_add_listener(window->wl.xdg.toplevel,*/
+                              /*&xdgToplevelListener,*/
+                              /*window);*/
 
-    xdg_toplevel_add_listener(window->wl.xdg.toplevel,
-                              &xdgToplevelListener,
-                              window);
+    /*if (window->wl.title)*/
+        /*xdg_toplevel_set_title(window->wl.xdg.toplevel, window->wl.title);*/
 
-    if (window->wl.title)
-        xdg_toplevel_set_title(window->wl.xdg.toplevel, window->wl.title);
+    /*if (window->minwidth != GLFW_DONT_CARE && window->minheight != GLFW_DONT_CARE)*/
+        /*xdg_toplevel_set_min_size(window->wl.xdg.toplevel,*/
+                                  /*window->minwidth, window->minheight);*/
+    /*if (window->maxwidth != GLFW_DONT_CARE && window->maxheight != GLFW_DONT_CARE)*/
+        /*xdg_toplevel_set_max_size(window->wl.xdg.toplevel,*/
+                                  /*window->maxwidth, window->maxheight);*/
 
-    if (window->minwidth != GLFW_DONT_CARE && window->minheight != GLFW_DONT_CARE)
-        xdg_toplevel_set_min_size(window->wl.xdg.toplevel,
-                                  window->minwidth, window->minheight);
-    if (window->maxwidth != GLFW_DONT_CARE && window->maxheight != GLFW_DONT_CARE)
-        xdg_toplevel_set_max_size(window->wl.xdg.toplevel,
-                                  window->maxwidth, window->maxheight);
+    /*if (window->monitor)*/
+    /*{*/
+        /*xdg_toplevel_set_fullscreen(window->wl.xdg.toplevel,*/
+                                    /*window->monitor->wl.output);*/
+        /*setIdleInhibitor(window, GLFW_TRUE);*/
+    /*}*/
+    /*else if (window->wl.maximized)*/
+    /*{*/
+        /*[>xdg_toplevel_set_maximized(window->wl.xdg.toplevel);<]*/
+        /*[>setIdleInhibitor(window, GLFW_FALSE);<]*/
+        /*[>setXdgDecorations(window);<]*/
+    /*}*/
+    /*else*/
+    /*{*/
+        /*[>setIdleInhibitor(window, GLFW_FALSE);<]*/
+        /*[>setXdgDecorations(window);<]*/
+    /*}*/
 
-    if (window->monitor)
-    {
-        xdg_toplevel_set_fullscreen(window->wl.xdg.toplevel,
-                                    window->monitor->wl.output);
-        setIdleInhibitor(window, GLFW_TRUE);
-    }
-    else if (window->wl.maximized)
-    {
-        xdg_toplevel_set_maximized(window->wl.xdg.toplevel);
-        setIdleInhibitor(window, GLFW_FALSE);
-        setXdgDecorations(window);
-    }
-    else
-    {
-        setIdleInhibitor(window, GLFW_FALSE);
-        setXdgDecorations(window);
-    }
+// TODO: surface_commit
+    /*wl_surface_commit(window->wl.surface);*/
+    /*wl_display_roundtrip(_glfw.wl.display);*/
 
-    wl_surface_commit(window->wl.surface);
-    wl_display_roundtrip(_glfw.wl.display);
-
-    return GLFW_TRUE;
-}
+    /*return GLFW_TRUE;*/
+/*}*/
 
 static void setCursorImage(_GLFWwindow* window,
                            _GLFWcursorWayland* cursorWayland)
@@ -808,15 +855,18 @@ int _glfwPlatformCreateWindow(_GLFWwindow* window,
 
     if (wndconfig->visible)
     {
-        if (!createXdgSurface(window))
-            return GLFW_FALSE;
+
+			  if(!createShellSurface(window))
+					return GLFW_FALSE;
+        /*if (!createXdgSurface(window))*/
+            /*return GLFW_FALSE;*/
 
         window->wl.visible = GLFW_TRUE;
     }
     else
     {
-        window->wl.xdg.surface = NULL;
-        window->wl.xdg.toplevel = NULL;
+        /*window->wl.xdg.surface = NULL;*/
+        /*window->wl.xdg.toplevel = NULL;*/
         window->wl.visible = GLFW_FALSE;
     }
 
@@ -849,8 +899,8 @@ void _glfwPlatformDestroyWindow(_GLFWwindow* window)
         window->context.destroy(window);
 
     destroyDecorations(window);
-    if (window->wl.xdg.decoration)
-        zxdg_toplevel_decoration_v1_destroy(window->wl.xdg.decoration);
+    /*if (window->wl.xdg.decoration)*/
+        /*zxdg_toplevel_decoration_v1_destroy(window->wl.xdg.decoration);*/
 
     if (window->wl.decorations.buffer)
         wl_buffer_destroy(window->wl.decorations.buffer);
@@ -858,11 +908,11 @@ void _glfwPlatformDestroyWindow(_GLFWwindow* window)
     if (window->wl.native)
         wl_egl_window_destroy(window->wl.native);
 
-    if (window->wl.xdg.toplevel)
-        xdg_toplevel_destroy(window->wl.xdg.toplevel);
+    /*if (window->wl.xdg.toplevel)*/
+        /*xdg_toplevel_destroy(window->wl.xdg.toplevel);*/
 
-    if (window->wl.xdg.surface)
-        xdg_surface_destroy(window->wl.xdg.surface);
+    /*if (window->wl.xdg.surface)*/
+        /*xdg_surface_destroy(window->wl.xdg.surface);*/
 
     if (window->wl.surface)
         wl_surface_destroy(window->wl.surface);
@@ -876,8 +926,8 @@ void _glfwPlatformSetWindowTitle(_GLFWwindow* window, const char* title)
     if (window->wl.title)
         free(window->wl.title);
     window->wl.title = _glfw_strdup(title);
-    if (window->wl.xdg.toplevel)
-        xdg_toplevel_set_title(window->wl.xdg.toplevel, title);
+    /*if (window->wl.xdg.toplevel)*/
+        /*xdg_toplevel_set_title(window->wl.xdg.toplevel, title);*/
 }
 
 void _glfwPlatformSetWindowIcon(_GLFWwindow* window,
@@ -923,16 +973,16 @@ void _glfwPlatformSetWindowSizeLimits(_GLFWwindow* window,
                                       int minwidth, int minheight,
                                       int maxwidth, int maxheight)
 {
-    if (window->wl.xdg.toplevel)
-    {
-        if (minwidth == GLFW_DONT_CARE || minheight == GLFW_DONT_CARE)
-            minwidth = minheight = 0;
-        if (maxwidth == GLFW_DONT_CARE || maxheight == GLFW_DONT_CARE)
-            maxwidth = maxheight = 0;
-        xdg_toplevel_set_min_size(window->wl.xdg.toplevel, minwidth, minheight);
-        xdg_toplevel_set_max_size(window->wl.xdg.toplevel, maxwidth, maxheight);
-        wl_surface_commit(window->wl.surface);
-    }
+    /*if (window->wl.xdg.toplevel)*/
+    /*{*/
+        /*if (minwidth == GLFW_DONT_CARE || minheight == GLFW_DONT_CARE)*/
+            /*minwidth = minheight = 0;*/
+        /*if (maxwidth == GLFW_DONT_CARE || maxheight == GLFW_DONT_CARE)*/
+            /*maxwidth = maxheight = 0;*/
+        /*xdg_toplevel_set_min_size(window->wl.xdg.toplevel, minwidth, minheight);*/
+        /*xdg_toplevel_set_max_size(window->wl.xdg.toplevel, maxwidth, maxheight);*/
+        /*wl_surface_commit(window->wl.surface);*/
+    /*}*/
 }
 
 void _glfwPlatformSetWindowAspectRatio(_GLFWwindow* window,
@@ -978,53 +1028,53 @@ void _glfwPlatformGetWindowContentScale(_GLFWwindow* window,
 
 void _glfwPlatformIconifyWindow(_GLFWwindow* window)
 {
-    if (window->wl.xdg.toplevel)
-        xdg_toplevel_set_minimized(window->wl.xdg.toplevel);
+    /*if (window->wl.xdg.toplevel)*/
+        /*xdg_toplevel_set_minimized(window->wl.xdg.toplevel);*/
 }
 
 void _glfwPlatformRestoreWindow(_GLFWwindow* window)
 {
-    if (window->wl.xdg.toplevel)
-    {
-        if (window->monitor)
-            xdg_toplevel_unset_fullscreen(window->wl.xdg.toplevel);
-        if (window->wl.maximized)
-            xdg_toplevel_unset_maximized(window->wl.xdg.toplevel);
-        // There is no way to unset minimized, or even to know if we are
-        // minimized, so there is nothing to do in this case.
-    }
-    _glfwInputWindowMonitor(window, NULL);
-    window->wl.maximized = GLFW_FALSE;
+    /*if (window->wl.xdg.toplevel)*/
+    /*{*/
+        /*if (window->monitor)*/
+            /*xdg_toplevel_unset_fullscreen(window->wl.xdg.toplevel);*/
+        /*if (window->wl.maximized)*/
+            /*xdg_toplevel_unset_maximized(window->wl.xdg.toplevel);*/
+        /*// There is no way to unset minimized, or even to know if we are*/
+        /*// minimized, so there is nothing to do in this case.*/
+    /*}*/
+    /*_glfwInputWindowMonitor(window, NULL);*/
+    /*window->wl.maximized = GLFW_FALSE;*/
 }
 
 void _glfwPlatformMaximizeWindow(_GLFWwindow* window)
 {
-    if (window->wl.xdg.toplevel)
-    {
-        xdg_toplevel_set_maximized(window->wl.xdg.toplevel);
-    }
-    window->wl.maximized = GLFW_TRUE;
+    /*if (window->wl.xdg.toplevel)*/
+    /*{*/
+        /*xdg_toplevel_set_maximized(window->wl.xdg.toplevel);*/
+    /*}*/
+    /*window->wl.maximized = GLFW_TRUE;*/
 }
 
 void _glfwPlatformShowWindow(_GLFWwindow* window)
 {
     if (!window->wl.visible)
     {
-        createXdgSurface(window);
+        createShellSurface(window);
         window->wl.visible = GLFW_TRUE;
     }
 }
 
 void _glfwPlatformHideWindow(_GLFWwindow* window)
 {
-    if (window->wl.xdg.toplevel)
-    {
-        xdg_toplevel_destroy(window->wl.xdg.toplevel);
-        xdg_surface_destroy(window->wl.xdg.surface);
-        window->wl.xdg.toplevel = NULL;
-        window->wl.xdg.surface = NULL;
-    }
-    window->wl.visible = GLFW_FALSE;
+    /*if (window->wl.xdg.toplevel)*/
+    /*{*/
+        /*xdg_toplevel_destroy(window->wl.xdg.toplevel);*/
+        /*xdg_surface_destroy(window->wl.xdg.surface);*/
+        /*window->wl.xdg.toplevel = NULL;*/
+        /*window->wl.xdg.surface = NULL;*/
+    /*}*/
+    /*window->wl.visible = GLFW_FALSE;*/
 }
 
 void _glfwPlatformRequestWindowAttention(_GLFWwindow* window)
@@ -1052,11 +1102,11 @@ void _glfwPlatformSetWindowMonitor(_GLFWwindow* window,
     }
     else
     {
-        if (window->wl.xdg.toplevel)
-            xdg_toplevel_unset_fullscreen(window->wl.xdg.toplevel);
+        /*if (window->wl.xdg.toplevel)*/
+            /*xdg_toplevel_unset_fullscreen(window->wl.xdg.toplevel);*/
         setIdleInhibitor(window, GLFW_FALSE);
-        if (!_glfw.wl.decorationManager)
-            createDecorations(window);
+        /*if (!_glfw.wl.decorationManager)*/
+            /*createDecorations(window);*/
     }
     _glfwInputWindowMonitor(window, monitor);
 }

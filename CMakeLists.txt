@@ -146,7 +146,7 @@ elseif (APPLE)
     set(_GLFW_COCOA 1)
     message(STATUS "Using Cocoa for window creation")
 elseif (UNIX)
-    set(_GLFW_X11 1)
+	#set(_GLFW_X11 1)
     message(STATUS "Using X11 for window creation")
 else()
     message(FATAL_ERROR "No supported platform was detected")
@@ -231,6 +231,7 @@ endif()
 # Use Wayland for window creation
 #--------------------------------------------------------------------
 if (_GLFW_WAYLAND)
+  	message(STATUS "CMAKE_MODULE_PATH: " ${CMAKE_MODULE_PATH})
     find_package(ECM REQUIRED NO_MODULE)
     list(APPEND CMAKE_MODULE_PATH "${ECM_MODULE_PATH}")
 

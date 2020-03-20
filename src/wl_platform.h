@@ -56,8 +56,8 @@ typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR
 #include "egl_context.h"
 #include "osmesa_context.h"
 
-#include "wayland-xdg-shell-client-protocol.h"
-#include "wayland-xdg-decoration-client-protocol.h"
+// #include "wayland-xdg-shell-client-protocol.h"
+// #include "wayland-xdg-decoration-client-protocol.h"
 #include "wayland-viewporter-client-protocol.h"
 #include "wayland-relative-pointer-unstable-v1-client-protocol.h"
 #include "wayland-pointer-constraints-unstable-v1-client-protocol.h"
@@ -182,11 +182,14 @@ typedef struct _GLFWwindowWayland
     struct wl_egl_window*       native;
     struct wl_callback*         callback;
 
-    struct {
-        struct xdg_surface*     surface;
-        struct xdg_toplevel*    toplevel;
-        struct zxdg_toplevel_decoration_v1* decoration;
-    } xdg;
+		// ivi-shell
+    struct wl_shell_surface*     ivi_shell_surface;
+
+    //struct {
+        //struct xdg_surface*     surface;
+        //struct xdg_toplevel*    toplevel;
+        //struct zxdg_toplevel_decoration_v1* decoration;
+    //} xdg;
 
     _GLFWcursor*                currentCursor;
     double                      cursorPosX, cursorPosY;
@@ -234,8 +237,10 @@ typedef struct _GLFWlibraryWayland
     struct wl_data_device*      dataDevice;
     struct wl_data_offer*       dataOffer;
     struct wl_data_source*      dataSource;
-    struct xdg_wm_base*         wmBase;
-    struct zxdg_decoration_manager_v1*      decorationManager;
+
+		struct wl_shell*            ivi_shell;
+    //struct xdg_wm_base*         wmBase;
+    //struct zxdg_decoration_manager_v1*      decorationManager;
     struct wp_viewporter*       viewporter;
     struct zwp_relative_pointer_manager_v1* relativePointerManager;
     struct zwp_pointer_constraints_v1*      pointerConstraints;

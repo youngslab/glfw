@@ -244,63 +244,65 @@ static void pointerHandleButton(void* data,
 {
     _GLFWwindow* window = _glfw.wl.pointerFocus;
     int glfwButton;
-    uint32_t edges = XDG_TOPLEVEL_RESIZE_EDGE_NONE;
+    /*uint32_t edges = XDG_TOPLEVEL_RESIZE_EDGE_NONE;*/
 
     if (!window)
         return;
     if (button == BTN_LEFT)
     {
-        switch (window->wl.decorations.focus)
-        {
-            case mainWindow:
-                break;
-            case topDecoration:
-                if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP;
-                else
-                {
-                    xdg_toplevel_move(window->wl.xdg.toplevel, _glfw.wl.seat, serial);
-                }
-                break;
-            case leftDecoration:
-                if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP_LEFT;
-                else
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_LEFT;
-                break;
-            case rightDecoration:
-                if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP_RIGHT;
-                else
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_RIGHT;
-                break;
-            case bottomDecoration:
-                if (window->wl.cursorPosX < _GLFW_DECORATION_WIDTH)
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_LEFT;
-                else if (window->wl.cursorPosX > window->wl.width + _GLFW_DECORATION_WIDTH)
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT;
-                else
-                    edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM;
-                break;
-            default:
-                assert(0);
-        }
-        if (edges != XDG_TOPLEVEL_RESIZE_EDGE_NONE)
-        {
-            xdg_toplevel_resize(window->wl.xdg.toplevel, _glfw.wl.seat,
-                                serial, edges);
-        }
+        /*switch (window->wl.decorations.focus)*/
+        /*{*/
+            /*case mainWindow:*/
+                /*break;*/
+            /*case topDecoration:*/
+                /*if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP;*/
+                /*[>else<]*/
+                /*[>{<]*/
+                    /*[>xdg_toplevel_move(window->wl.xdg.toplevel, _glfw.wl.seat, serial);<]*/
+                /*[>}<]*/
+                /*break;*/
+            /*case leftDecoration:*/
+                /*if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP_LEFT;*/
+                /*else*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_LEFT;*/
+                /*break;*/
+            /*case rightDecoration:*/
+                /*if (window->wl.cursorPosY < _GLFW_DECORATION_WIDTH)*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_TOP_RIGHT;*/
+                /*else*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_RIGHT;*/
+                /*break;*/
+            /*case bottomDecoration:*/
+                /*if (window->wl.cursorPosX < _GLFW_DECORATION_WIDTH)*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_LEFT;*/
+                /*else if (window->wl.cursorPosX > window->wl.width + _GLFW_DECORATION_WIDTH)*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM_RIGHT;*/
+                /*else*/
+                    /*edges = XDG_TOPLEVEL_RESIZE_EDGE_BOTTOM;*/
+                /*break;*/
+            /*default:*/
+                /*assert(0);*/
+        /*}*/
+        /*if (edges != XDG_TOPLEVEL_RESIZE_EDGE_NONE)*/
+        /*{*/
+            /*[>xdg_toplevel_resize(window->wl.xdg.toplevel, _glfw.wl.seat,<]*/
+                                /*[>serial, edges);<]*/
+        /*}*/
     }
     else if (button == BTN_RIGHT)
     {
-        if (window->wl.decorations.focus != mainWindow && window->wl.xdg.toplevel)
-        {
-            xdg_toplevel_show_window_menu(window->wl.xdg.toplevel,
-                                          _glfw.wl.seat, serial,
-                                          window->wl.cursorPosX,
-                                          window->wl.cursorPosY);
-            return;
-        }
+
+			  // XDG...
+        /*if (window->wl.decorations.focus != mainWindow && window->wl.xdg.toplevel)*/
+        /*{*/
+            /*xdg_toplevel_show_window_menu(window->wl.xdg.toplevel,*/
+                                          /*_glfw.wl.seat, serial,*/
+                                          /*window->wl.cursorPosX,*/
+                                          /*window->wl.cursorPosY);*/
+            /*return;*/
+        /*}*/
     }
 
     // Don’t pass the button to the user if it was related to a decoration.
@@ -769,16 +771,19 @@ static const struct wl_data_device_listener dataDeviceListener = {
     dataDeviceHandleSelection,
 };
 
-static void wmBaseHandlePing(void* data,
-                             struct xdg_wm_base* wmBase,
-                             uint32_t serial)
-{
-    xdg_wm_base_pong(wmBase, serial);
-}
 
-static const struct xdg_wm_base_listener wmBaseListener = {
-    wmBaseHandlePing
-};
+
+
+/*static void wmBaseHandlePing(void* data,*/
+                             /*struct xdg_wm_base* wmBase,*/
+                             /*uint32_t serial)*/
+/*{*/
+    /*xdg_wm_base_pong(wmBase, serial);*/
+/*}*/
+
+/*static const struct xdg_wm_base_listener wmBaseListener = {*/
+    /*wmBaseHandlePing*/
+/*};*/
 
 static void registryHandleGlobal(void* data,
                                  struct wl_registry* registry,
@@ -786,6 +791,7 @@ static void registryHandleGlobal(void* data,
                                  const char* interface,
                                  uint32_t version)
 {
+
     if (strcmp(interface, "wl_compositor") == 0)
     {
         _glfw.wl.compositorVersion = min(3, version);
@@ -827,19 +833,25 @@ static void registryHandleGlobal(void* data,
                                  &wl_data_device_manager_interface, 1);
         }
     }
-    else if (strcmp(interface, "xdg_wm_base") == 0)
-    {
-        _glfw.wl.wmBase =
-            wl_registry_bind(registry, name, &xdg_wm_base_interface, 1);
-        xdg_wm_base_add_listener(_glfw.wl.wmBase, &wmBaseListener, NULL);
+    else if (strcmp(interface, "wl_shell") == 0) {
+			  if( !_glfw.wl.ivi_shell)
+			  {
+             _glfw.wl.ivi_shell = wl_registry_bind(registry, name, &wl_shell_interface, 1);
+			  }
     }
-    else if (strcmp(interface, "zxdg_decoration_manager_v1") == 0)
-    {
-        _glfw.wl.decorationManager =
-            wl_registry_bind(registry, name,
-                             &zxdg_decoration_manager_v1_interface,
-                             1);
-    }
+ /*else if (strcmp(interface, "xdg_wm_base") == 0)*/
+    /*{*/
+        /*_glfw.wl.wmBase =*/
+            /*wl_registry_bind(registry, name, &xdg_wm_base_interface, 1);*/
+        /*xdg_wm_base_add_listener(_glfw.wl.wmBase, &wmBaseListener, NULL);*/
+    /*}*/
+    /*else if (strcmp(interface, "zxdg_decoration_manager_v1") == 0)*/
+    /*{*/
+        /*_glfw.wl.decorationManager =*/
+            /*wl_registry_bind(registry, name,*/
+                             /*&zxdg_decoration_manager_v1_interface,*/
+                             /*1);*/
+    /*}*/
     else if (strcmp(interface, "wp_viewporter") == 0)
     {
         _glfw.wl.viewporter =
@@ -1033,6 +1045,8 @@ static void createKeyTables(void)
 
 int _glfwPlatformInit(void)
 {
+
+    fprintf(stdout, "_glfwPlatformInit(void)\n");
     const char *cursorTheme;
     const char *cursorSizeStr;
     char *cursorSizeEnd;
@@ -1127,7 +1141,12 @@ int _glfwPlatformInit(void)
         return GLFW_FALSE;
     }
 
+		fprintf(stdout, "register listner\n ");
     _glfw.wl.registry = wl_display_get_registry(_glfw.wl.display);
+		if(!_glfw.wl.registry) {
+		  fprintf(stdout, "register erro\n ");
+		  return GLFW_FALSE;
+		}
     wl_registry_add_listener(_glfw.wl.registry, &registryListener, NULL);
 
     createKeyTables();
@@ -1157,12 +1176,18 @@ int _glfwPlatformInit(void)
     if (_glfw.wl.seatVersion >= 4)
         _glfw.wl.timerfd = timerfd_create(CLOCK_MONOTONIC, TFD_CLOEXEC);
 
-    if (!_glfw.wl.wmBase)
-    {
-        _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "Wayland: Failed to find xdg-shell in your compositor");
-        return GLFW_FALSE;
-    }
+		if(!_glfw.wl.ivi_shell ) {
+				_glfwInputError(GLFW_PLATFORM_ERROR,
+												"wayland: failed to find shell in your compositor");
+				return GLFW_FALSE;
+		}
+
+    /*if (!_glfw.wl.wmBase)*/
+    /*{*/
+        /*_glfwinputerror(glfw_platform_error,*/
+                        /*"wayland: failed to find xdg-shell in your compositor");*/
+        /*return glfw_false;*/
+    /*}*/
 
     if (_glfw.wl.pointer && _glfw.wl.shm)
     {
@@ -1213,6 +1238,7 @@ int _glfwPlatformInit(void)
 
 void _glfwPlatformTerminate(void)
 {
+    fprintf(stdout, "_glfwPlatformTerminate(void)\n");
 #ifdef __linux__
     _glfwTerminateJoysticksLinux();
 #endif
@@ -1259,10 +1285,10 @@ void _glfwPlatformTerminate(void)
         wl_shm_destroy(_glfw.wl.shm);
     if (_glfw.wl.viewporter)
         wp_viewporter_destroy(_glfw.wl.viewporter);
-    if (_glfw.wl.decorationManager)
-        zxdg_decoration_manager_v1_destroy(_glfw.wl.decorationManager);
-    if (_glfw.wl.wmBase)
-        xdg_wm_base_destroy(_glfw.wl.wmBase);
+    /*if (_glfw.wl.decorationManager)*/
+        /*zxdg_decoration_manager_v1_destroy(_glfw.wl.decorationManager);*/
+    /*if (_glfw.wl.wmBase)*/
+        /*xdg_wm_base_destroy(_glfw.wl.wmBase);*/
     if (_glfw.wl.dataSource)
         wl_data_source_destroy(_glfw.wl.dataSource);
     if (_glfw.wl.dataDevice)
