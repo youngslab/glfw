@@ -24,7 +24,9 @@
 //========================================================================
 //! [code]
 
-#include <glad/gl.h>
+// #include <glad/gl.h>
+#include <EGL/egl.h>
+#include <GLES3/gl3.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -104,7 +106,7 @@ int main(void)
     glfwSetKeyCallback(window, key_callback);
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
+    // gladLoadGL(glfwGetProcAddress);
     glfwSwapInterval(1);
 
     // NOTE: OpenGL error checks have been omitted for brevity
@@ -149,7 +151,7 @@ int main(void)
         const float ratio = width / (float) height;
 
         glViewport(0, 0, width, height);
- 			  fprintf(stdout, "viewport %d, %d\n", width, height);
+				glClearColor(1.0, 1.0, 1.0, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
         mat4x4 m, p, mvp;
