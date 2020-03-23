@@ -1398,7 +1398,7 @@ int _glfwPlatformCreateWindow(_GLFWwindow* window,
     if (window->monitor)
     {
         _glfwPlatformShowWindow(window);
-        _glfwPlatformFocusWindow(window);
+        // _glfwPlatformFocusWindow(window);
         acquireMonitor(window);
         fitToMonitor(window);
     }

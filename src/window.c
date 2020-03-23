@@ -154,6 +154,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
                                      GLFWmonitor* monitor,
                                      GLFWwindow* share)
 {
+	  fprintf(stdout, "glfwCreateWindow\n");
     _GLFWfbconfig fbconfig;
     _GLFWctxconfig ctxconfig;
     _GLFWwndconfig wndconfig;

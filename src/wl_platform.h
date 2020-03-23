@@ -62,6 +62,7 @@ typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR
 #include "wayland-relative-pointer-unstable-v1-client-protocol.h"
 #include "wayland-pointer-constraints-unstable-v1-client-protocol.h"
 #include "wayland-idle-inhibit-unstable-v1-client-protocol.h"
+#include "wayland-xdg-shell-unstable-v6-client-protocol.h"
 
 #define _glfw_dlopen(name) dlopen(name, RTLD_LAZY | RTLD_LOCAL)
 #define _glfw_dlclose(handle) dlclose(handle)
@@ -188,6 +189,13 @@ typedef struct _GLFWwindowWayland
         struct zxdg_toplevel_decoration_v1* decoration;
     } xdg;
 
+    // fallback of unstale xdg_shell_v6
+    struct {
+        struct zxdg_surface_v6*  surface;
+        struct zxdg_toplevel_v6* toplevel;
+        struct zxdg_toplevel_decoration_v1* decoration;
+   } zxdg;
+
     _GLFWcursor*                currentCursor;
     double                      cursorPosX, cursorPosY;
 
@@ -235,6 +243,8 @@ typedef struct _GLFWlibraryWayland
     struct wl_data_offer*       dataOffer;
     struct wl_data_source*      dataSource;
     struct xdg_wm_base*         wmBase;
+    // fallback of unstale xdg_shell_v6
+    struct zxdg_shell_v6*       zxdgShell;
     struct zxdg_decoration_manager_v1*      decorationManager;
     struct wp_viewporter*       viewporter;
     struct zwp_relative_pointer_manager_v1* relativePointerManager;

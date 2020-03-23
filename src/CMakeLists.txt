@@ -44,6 +44,8 @@ if (_GLFW_X11 OR _GLFW_WAYLAND)
     endif()
 endif()
 
+message(STATUS "WAYLAND_PROTOCOLS_PKGDATADIR: " ${WAYLAND_PROTOCOLS_PKGDATADIR})
+
 if (_GLFW_WAYLAND)
     ecm_add_wayland_client_protocol(GLFW_WAYLAND_PROTOCOL_SOURCES
         PROTOCOL
@@ -69,6 +71,10 @@ if (_GLFW_WAYLAND)
         PROTOCOL
         "${WAYLAND_PROTOCOLS_PKGDATADIR}/unstable/idle-inhibit/idle-inhibit-unstable-v1.xml"
         BASENAME idle-inhibit-unstable-v1)
+    ecm_add_wayland_client_protocol(GLFW_WAYLAND_PROTOCOL_SOURCES
+        PROTOCOL
+        "${WAYLAND_PROTOCOLS_PKGDATADIR}/unstable/xdg-shell/xdg-shell-unstable-v6.xml"
+        BASENAME xdg-shell-unstable-v6)
     target_sources(glfw PRIVATE ${GLFW_WAYLAND_PROTOCOL_SOURCES})
 endif()
 
